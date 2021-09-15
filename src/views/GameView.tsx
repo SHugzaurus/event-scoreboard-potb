@@ -171,7 +171,7 @@ export const GameView: React.VoidFunctionComponent = () => {
             >
                 <div className="flex flex-column justify-center w-100 h-100 items-center">
                     <div className="flex justify-center pv2 w-100">
-                        <input id="newPlayerNameInput" value={importString} placeholder="Nom..." className="b helvetica dark-pink"
+                        <input id="newPlayerNameInput" value={importString} placeholder="Coller le bouzin ici..." className="b helvetica dark-pink"
                             onChange={changeImportString} />
                     </div>
                     {
@@ -179,10 +179,15 @@ export const GameView: React.VoidFunctionComponent = () => {
                         <p className="red"> chaine invalide ^^ </p>: null
                     }
                     <div className="flex justify-center w-100 mt2">
-                        <div className="flex justify-center bg-dark-pink link dib grow pointer br-pill justify-center ph1"
+                        <div className="flex justify-center bg-dark-pink link dib grow pointer br-pill justify-center ph1 mr2"
                             style={{ width: "80px" }}
                             onClick={tryToImport}>
                             <p className="b white helvetica">OK</p>
+                        </div>
+                        <div className="flex justify-center bg-dark-pink link dib grow pointer br-pill justify-center ph1"
+                            style={{ width: "80px" }}
+                            onClick={()=>{setImportModalOpened(false)}}>
+                            <p className="b white helvetica">Annuler</p>
                         </div>
                     </div>
                 </div>
