@@ -11,11 +11,13 @@
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import path from 'path';
-import { app, BrowserWindow, shell, ipcMain } from 'electron';
+import { app, BrowserWindow, shell, ipcMain, clipboard, nativeImage } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
+import html2canvas from 'html2canvas';
+
 
 export default class AppUpdater {
   constructor() {
@@ -30,8 +32,19 @@ let mainWindow: BrowserWindow | null = null;
 ipcMain.on('ipc-example', async (event, arg) => {
   const msgTemplate = (pingPong: string) => `IPC test: ${pingPong}`;
   console.log(msgTemplate(arg));
-  event.reply('ipc-example', msgTemplate('pong'));
+  event.reply('ipc-example', msgTemplate('pong')); 
 });
+
+
+
+ipcMain.on('copyImage', async(event, arg) => {
+    const ni = nativeImage.createFromDataURL(arg);
+    clipboard.writeImage(ni);
+    console.log(ni);
+    return Promise.resolve(true);
+});
+  
+
 
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');
@@ -81,6 +94,7 @@ const createWindow = async () => {
     icon: getAssetPath('icon.png'),
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
+      
     },
   });
 
@@ -106,6 +120,24 @@ const createWindow = async () => {
 
   const menuBuilder = new MenuBuilder(mainWindow);
   menuBuilder.buildMenu();
+
+  mainWindow.on('close', (e)=> {
+    e.preventDefault();
+    let window : BrowserWindow= mainWindow ;    
+   
+    let choice = require('electron').dialog.showMessageBox(window,
+        {
+          type: 'question',
+          buttons: ['OK', 'Annuler'],
+          defaultId:0,
+          cancelId:1,
+          title: 'Attention',
+          message: 'En fermant la fenêtre, rien ne sera sauvegardé. Continuer?'
+       }).then((ret) =>{
+          if (ret.response ===0)
+            mainWindow?.destroy();
+       })
+    });
 
   // Open urls in the user's browser
   mainWindow.webContents.on('new-window', (event, url) => {

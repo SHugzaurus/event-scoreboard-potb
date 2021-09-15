@@ -1,6 +1,6 @@
 {
-  "name": "electron-react-boilerplate",
-  "productName": "electron-react-boilerplate",
+  "name": "potb-events",
+  "productName": "Scoreboard events POTB",
   "version": "3.0.2",
   "description": "Electron application boilerplate based on React, React Router, Webpack, React Hot Loader for rapid application development",
   "main": "./dist/main/main.js",
@@ -15,5 +15,9 @@
     "postinstall": "yarn electron-rebuild && yarn link-modules"
   },
   "license": "MIT",
-  "dependencies": {}
+  "dependencies": {
+    "electron-store": "^8.0.0",
+    "fs": "^0.0.1-security",
+    "path-browserify": "^1.0.1"
+  }
 }

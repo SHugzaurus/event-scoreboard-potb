@@ -22,6 +22,7 @@ export default {
           },
         },
       },
+      
     ],
   },
 
@@ -30,6 +31,7 @@ export default {
     // https://github.com/webpack/webpack/issues/1114
     library: {
       type: 'commonjs2',
+      
     },
   },
 
